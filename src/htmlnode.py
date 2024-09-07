@@ -30,29 +30,20 @@ class ParentNode(HTMLNode):
 
     def to_html(self):
         if self.children == None:
-            raiseValueError("ParentNode must have children")
+            raise ValueError("ParentNode must have children")
         if self.tag == None:
-            raiseValueError("ParentNode must have tags")
+            raise ValueError("ParentNode must have tags")
 
         else:
 
-            if len(self.children) == 0:
-                return ""
-                # return f"<{self.tag}>{children_html}</{self.tag}>"
-            else:
-                # children_html = ""
-                # children_html += self.children[0].to_html()
-                self.children = self.children[:-1]
-                return self.to_html() + self.children[0].to_html()
+            children_html = ""
+            for child in self.children:
+                children_html += child.to_html()
 
-            # children_html = ""
-            # for child in self.children:
-            #     children_html += child.to_html()
+            return f"<{self.tag}>{children_html}</{self.tag}>"
 
-            # return f"<{self.tag}>{children_html}</{self.tag}>"
-
-            # list(map(lambda a: a.to_html, self.children))
-            # f'<{self.tag}>{self.children.to_html()}</{self.tag}>'
+    def __repr__(self):
+        return f"ParentNode({self.tag}, children: {self.children}, {self.props})"
 
 
 class LeafNode(HTMLNode):
@@ -69,3 +60,6 @@ class LeafNode(HTMLNode):
             return self.value
         else:
             return f"<{self.tag}{self.props_to_html()}>" f"{self.value}</{self.tag}>"
+
+    def __repr__(self):
+        return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
