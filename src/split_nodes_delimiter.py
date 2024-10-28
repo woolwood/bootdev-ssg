@@ -19,7 +19,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 f"Invalid markdown code, closing delimiter {delimiter} not found."
             )
 
-        delimiters = ["*", "**"]
+        delimiters = ["**", "*", "`"]
 
         # Split the text node on the delimiter in three parts, the last part is
         # the remainder and will be checked later
@@ -42,8 +42,8 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                     raise Exception(f"Nesting {d} inside of {delimiter} not allowed.")
 
         # Append the processed node after these checks and process the remainder.
-        new_nodes.append(TextNode(node_parts[1], text_type))
 
+        new_nodes.append(TextNode(node_parts[1], text_type))
         splitter(TextNode(node_parts[2], TextType.TEXT), delimiter, text_type)
 
     new_nodes = []
