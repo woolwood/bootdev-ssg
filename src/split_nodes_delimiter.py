@@ -23,7 +23,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         if text_type != TextType.CODE:
             for d in delimiters:
                 if d in node_parts[1]:
-                    raise Exception("Nesting {d} inside of {delimiter} not allowed.")
+                    raise Exception(f"Nesting {d} inside of {delimiter} not allowed.")
         new_nodes.append(TextNode(node_parts[1], text_type))
 
         splitter(TextNode(node_parts[2], TextType.TEXT), delimiter, text_type)
