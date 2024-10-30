@@ -5,7 +5,6 @@ from split_nodes import split_nodes_delimiter, split_nodes_image, split_nodes_li
 
 
 class TestSplitNodesImage(unittest.TestCase):
-
     def test_split_nodes_image(self):
         node = TextNode(
             "Here is an image of a cat looking at a mouse: ![A cat looks at a mouse.](https://img.freepik.com/premium-photo/cat-looking-mouse-table_865967-64208.jpg), isn't it cute?",
@@ -26,7 +25,6 @@ class TestSplitNodesImage(unittest.TestCase):
 
 
 class TestSplitNodesLink(unittest.TestCase):
-
     def test_split_nodes_link(self):
         node = TextNode(
             "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev). Also, here is an image of a cat looking at a mouse: ![A cat looks at a mouse.](https://img.freepik.com/premium-photo/cat-looking-mouse-table_865967-64208.jpg), isn't it cute?",
@@ -60,9 +58,7 @@ class TestSplitNodesLink(unittest.TestCase):
 
 
 class TestSplitNodesDelimiter(unittest.TestCase):
-
     def test_split_nodes_delimiter(self):
-
         # Bold phrase by itself
         node = TextNode("**bold**", TextType.TEXT)
         delimiter = "**"
@@ -141,7 +137,6 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         self.assertEqual(result, expected_output)
 
     def test_consecutive_delimiters(self):
-
         node = TextNode("````code````", TextType.TEXT)
         delimiter = "`"
         text_type = TextType.CODE
@@ -153,7 +148,6 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         )
 
     def test_unclosed_delimiter(self):
-
         node = TextNode("**bold phrase", TextType.TEXT)
         delimiter = "**"
         text_type = TextType.BOLD

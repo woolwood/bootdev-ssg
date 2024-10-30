@@ -10,7 +10,6 @@ def split_nodes_image(old_nodes):
     """
 
     def splitter(node):
-
         # Extract all images from node.
         matched_images = extract_markdown_images(node.text)
 
@@ -52,7 +51,6 @@ def split_nodes_link(old_nodes):
     """
 
     def splitter(node):
-
         # Extract all links from node.
         matched_links = extract_markdown_links(node.text)
 

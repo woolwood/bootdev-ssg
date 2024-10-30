@@ -6,7 +6,6 @@ class HTMLNode:
         self.props = props
 
     def __repr__(self):
-
         return (
             f"HTMLNode(tag = {self.tag}, value = {self.value}, "
             f"children = {self.children}, props = {self.props})"
@@ -48,7 +47,6 @@ class ParentNode(HTMLNode):
             raise ValueError("ParentNode must have tags")
 
         else:
-
             children_html = ""
             for child in self.children:
                 children_html += child.to_html()
