@@ -1,4 +1,90 @@
+import re
 from textnode import TextNode, TextType
+from extract_markdown_uri import extract_markdown_images, extract_markdown_links
+
+
+def split_nodes_image(old_nodes):
+    """
+    Takes a list of 'old nodes', splits the list on Markdown formatted images
+    (converting these into TextType.IMAGE TextNodes).
+    """
+
+    def splitter(node):
+
+        # Extract all images from node.
+        matched_images = extract_markdown_images(node.text)
+
+        # If no image formatting found in node, and node is not empty, pass it as-is to new_nodes.
+        if not matched_images:
+            if node.text:
+                new_nodes.append(node)
+            return
+
+        # Split the text node on encountering formatted image in four parts.
+        # Everything before image gets TextType.TEXT, everything after is checked again.
+
+        node_parts = re.split(r"\!\[(.*?)\]\((.*?)\)", node.text, 1)
+
+        # If the first part is empty, do not add it to new_nodes.
+        if node_parts[0]:
+            new_nodes.append(TextNode(node_parts[0], TextType.TEXT))
+
+        # Construct a TextType.IMAGE TextNode from 2nd and 3rd part and append to
+        # new_nodes and process the remainder.
+
+        new_nodes.append(TextNode(node_parts[1], TextType.IMAGE, node_parts[2]))
+        splitter(TextNode(node_parts[3], TextType.TEXT))
+
+    new_nodes = []
+    for text_node in old_nodes:
+        if text_node.text_type != TextType.TEXT:
+            new_nodes.append(text_node)
+        else:
+            splitter(text_node)
+
+    return new_nodes
+
+
+def split_nodes_link(old_nodes):
+    """
+    Takes a list of 'old nodes', splits the list on Markdown formatted links
+    (converting these into TextType.LINK TextNodes).
+    """
+
+    def splitter(node):
+
+        # Extract all links from node.
+        matched_links = extract_markdown_links(node.text)
+
+        # If no link formatting found in node, and node is not empty, pass it as-is to new_nodes.
+        if not matched_links:
+            if node.text:
+                new_nodes.append(node)
+            return
+
+        # Split the text node on encountering formatted link in four parts.
+        # Everything before link gets TextType.TEXT, everything after is checked again.
+
+        node_parts = re.split(r"(?<!!)\[(.*?)\]\((.*?)\)", node.text, 1)
+
+        # If the first part is empty, do not add it to new_nodes.
+        if node_parts[0]:
+            new_nodes.append(TextNode(node_parts[0], TextType.TEXT))
+
+        # Construct a TextType.LINK TextNode from 2nd and 3rd part and append to
+        # new_nodes and process the remainder.
+
+        new_nodes.append(TextNode(node_parts[1], TextType.LINK, node_parts[2]))
+        splitter(TextNode(node_parts[3], TextType.TEXT))
+
+    new_nodes = []
+    for text_node in old_nodes:
+        if text_node.text_type != TextType.TEXT:
+            new_nodes.append(text_node)
+        else:
+            splitter(text_node)
+
+    return new_nodes
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -8,7 +94,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     """
 
     def splitter(node, delimiter, text_type):
-        # If delimiter not found in text, pass it as-is to new_nodes.
+        # If delimiter not found in node, and node is not empty, pass it as-is to new_nodes.
         if delimiter not in node.text:
             if node.text:
                 new_nodes.append(node)
