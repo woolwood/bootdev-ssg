@@ -35,11 +35,11 @@ def split_nodes_image(old_nodes):
         splitter(TextNode(node_parts[3], TextType.TEXT))
 
     new_nodes = []
-    for text_node in old_nodes:
-        if text_node.text_type != TextType.TEXT:
-            new_nodes.append(text_node)
+    for textnode in old_nodes:
+        if textnode.text_type != TextType.TEXT:
+            new_nodes.append(textnode)
         else:
-            splitter(text_node)
+            splitter(textnode)
 
     return new_nodes
 
@@ -76,11 +76,11 @@ def split_nodes_link(old_nodes):
         splitter(TextNode(node_parts[3], TextType.TEXT))
 
     new_nodes = []
-    for text_node in old_nodes:
-        if text_node.text_type != TextType.TEXT:
-            new_nodes.append(text_node)
+    for textnode in old_nodes:
+        if textnode.text_type != TextType.TEXT:
+            new_nodes.append(textnode)
         else:
-            splitter(text_node)
+            splitter(textnode)
 
     return new_nodes
 
@@ -99,9 +99,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             return
         # If delimiter number is odd, there is an improperly closed tag.
         if node.text.count(delimiter) % 2 != 0:
-            raise Exception(
-                f"Invalid markdown code, closing delimiter {delimiter} not found."
-            )
+            raise Exception(f"Invalid markdown code, closing delimiter {delimiter} not found.")
 
         delimiters = ["**", "*", "`"]
 
@@ -115,9 +113,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
         # Consecutive delimiters result in empty fields. Don't allow for it.
         if node_parts[1] == "":
-            raise Exception(
-                f"Empty field. Consecutive delimiter {delimiter} not allowed."
-            )
+            raise Exception(f"Empty field. Consecutive delimiter {delimiter} not allowed.")
 
         # Do not allow nested delimiters, except inside of CODE TextTypes.
         if text_type != TextType.CODE:
@@ -131,10 +127,10 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         splitter(TextNode(node_parts[2], TextType.TEXT), delimiter, text_type)
 
     new_nodes = []
-    for text_node in old_nodes:
-        if text_node.text_type != TextType.TEXT:
-            new_nodes.append(text_node)
+    for textnode in old_nodes:
+        if textnode.text_type != TextType.TEXT:
+            new_nodes.append(textnode)
         else:
-            splitter(text_node, delimiter, text_type)
+            splitter(textnode, delimiter, text_type)
 
     return new_nodes
