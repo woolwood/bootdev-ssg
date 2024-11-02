@@ -99,7 +99,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             return
         # If delimiter number is odd, there is an improperly closed tag.
         if node.text.count(delimiter) % 2 != 0:
-            raise Exception(f"Invalid markdown code, closing delimiter {delimiter} not found.")
+            raise Exception(
+                f"Invalid markdown code, closing delimiter {delimiter} not found."
+            )
 
         delimiters = ["**", "*", "`"]
 
@@ -113,7 +115,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
         # Consecutive delimiters result in empty fields. Don't allow for it.
         if node_parts[1] == "":
-            raise Exception(f"Empty field. Consecutive delimiter {delimiter} not allowed.")
+            raise Exception(
+                f"Empty field. Consecutive delimiter {delimiter} not allowed."
+            )
 
         # Do not allow nested delimiters, except inside of CODE TextTypes.
         if text_type != TextType.CODE:

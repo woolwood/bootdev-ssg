@@ -1,5 +1,7 @@
 import unittest
-from blocks import markdown_to_blocks, block_to_block_type, check_startswith
+import enum
+
+from blocks import BlockType, markdown_to_blocks, block_to_block_type
 
 
 class TestBlockToBlockType(unittest.TestCase):
@@ -7,14 +9,14 @@ class TestBlockToBlockType(unittest.TestCase):
         input_text = """1. list 
 2. of 
 3. numbers"""
-        expected_result = "ordered_list"
+        expected_result = BlockType.OLIST
         result = block_to_block_type(input_text)
         self.assertEqual(expected_result, result)
 
     def test_block_to_quote(self):
         input_text = """>as per my last email
 >I'm grinding in the bootmines"""
-        expected_result = "quote"
+        expected_result = BlockType.QUOTE
         result = block_to_block_type(input_text)
         self.assertEqual(result, expected_result)
 
@@ -22,7 +24,7 @@ class TestBlockToBlockType(unittest.TestCase):
         input_text = """* list
 - of
 * things"""
-        expected_result = "unordered_list"
+        expected_result = BlockType.ULIST
         result = block_to_block_type(input_text)
 
         self.assertEqual(result, expected_result)
@@ -66,14 +68,14 @@ def split_nodes_link(old_nodes):
 
     return new_nodes
 ```"""
-        expected_result = "code"
+        expected_result = BlockType.CODE
         result = block_to_block_type(input_text)
         self.assertEqual(expected_result, result)
 
     def test_block_to_heading(self):
         input_text = """###### heading ahh text"""
         result = block_to_block_type(input_text)
-        expected_result = "heading"
+        expected_result = BlockType.HEADING
 
         self.assertEqual(expected_result, result)
 
@@ -81,7 +83,7 @@ def split_nodes_link(old_nodes):
         input_text = """This is a normal paragraph.
 It contains nothing fancy :)"""
         result = block_to_block_type(input_text)
-        expected_result = "paragraph"
+        expected_result = BlockType.PARAGRAPH
 
         self.assertEqual(expected_result, result)
 

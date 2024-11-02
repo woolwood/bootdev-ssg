@@ -9,12 +9,16 @@ class TestTextNodeToHtmlNode(unittest.TestCase):
         """Test BOLD TextType conversion."""
         textnode = TextNode("This is some text.", TextType.BOLD)
 
-        self.assertEqual(LeafNode("b", "This is some text."), textnode_to_html_node(textnode))
+        self.assertEqual(
+            LeafNode("b", "This is some text."), textnode_to_html_node(textnode)
+        )
 
     def test_image_node_to_html(self):
         """Test IMAGE TextType conversion."""
 
-        image_node = TextNode("This is some text.", TextType.IMAGE, "http://google.com/")
+        image_node = TextNode(
+            "This is some text.", TextType.IMAGE, "http://google.com/"
+        )
         wanted_image_node = LeafNode(
             "img", "", {"src": "http://google.com/", "alt": "This is some text."}
         )

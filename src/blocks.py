@@ -1,4 +1,15 @@
 import re
+from enum import Enum
+
+
+# Put the possible block types in an enum to use in case matching.
+class BlockType(Enum):
+    HEADING = "heading"
+    CODE = "code"
+    QUOTE = "quote"
+    ULIST = "unordered_list"
+    OLIST = "ordered_list"
+    PARAGRAPH = "paragraph"
 
 
 def markdown_to_blocks(markdown):
@@ -13,24 +24,17 @@ def is_ordered_list(input_list):
     return True
 
 
-def check_startswith(input_text):
-    if input_text.startswith("h"):
-        return "Yeah"
-
-
 def block_to_block_type(markdown):
     bullets = ("*", "-")
     if re.match("#{1,6} ", markdown):
-        return "heading"
-    # if markdown.startswith("# "):
-    #     return "heading"
+        return BlockType.HEADING
     elif markdown.startswith("```") and markdown.endswith("```"):
-        return "code"
+        return BlockType.CODE
     elif all([x.startswith(">") for x in markdown.split("\n")]):
-        return "quote"
+        return BlockType.QUOTE
     elif all([x.startswith(bullets) for x in markdown.split("\n")]):
-        return "unordered_list"
+        return BlockType.ULIST
     elif is_ordered_list(markdown.split("\n")):
-        return "ordered_list"
+        return BlockType.OLIST
     else:
-        return "paragraph"
+        return BlockType.PARAGRAPH
