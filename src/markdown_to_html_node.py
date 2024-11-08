@@ -24,7 +24,8 @@ def strip_blocklevel_md(block_type, block):
 
         case BlockType.HEADING:
             # Headings can't be multi-line, no need to split.
-            return [block.lstrip("# ")]
+            # return [block.lstrip("# ")]
+            return [re.sub(r"^(#+\s+)", "", block)]
 
         case BlockType.PARAGRAPH:
             return [x for x in block.split("\n")]

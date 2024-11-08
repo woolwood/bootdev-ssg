@@ -49,6 +49,13 @@ class TestMarkdownToHtmlConversion(unittest.TestCase):
         result_node = block_to_htmlnode(markdown)
         self.assertEqual(result_node, expected_node)
 
+    def test_heading_conversion_pound(self):
+        markdown = "# #Hashtag in heading"
+        expected_node = ParentNode("h1", [LeafNode(None, "#Hashtag in heading")])
+        result_node = block_to_htmlnode(markdown)
+        self.assertEqual(result_node, expected_node)
+        
+
     def test_paragraph_conversion(self):
         markdown = "This is a simple paragraph."
         expected_node = ParentNode("p", [LeafNode(None, "This is a simple paragraph.")])
