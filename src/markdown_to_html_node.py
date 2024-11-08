@@ -13,14 +13,15 @@ def strip_blocklevel_md(block_type, block):
         case BlockType.QUOTE:
             return [x.lstrip(">").lstrip() for x in block.split("\n")]
 
+        # case BlockType.ULIST:
+        #     return [x.lstrip("*- ").lstrip() for x in block.split("\n")]
         case BlockType.ULIST:
-            return [x.lstrip("*- ").lstrip() for x in block.split("\n")]
-
+            return [re.sub(r"^[-*] ", "", x).lstrip() for x in block.split("\n")]
         case BlockType.OLIST:
             return [re.sub(r"^(\d+)\. *", "", x).lstrip() for x in block.split("\n")]
 
         case BlockType.CODE:
-            return [block[3:-3]]
+            return [block[3:-3].strip()]
 
         case BlockType.HEADING:
             # Headings can't be multi-line, no need to split.
@@ -123,6 +124,6 @@ def markdown_to_html_node(markdown):
         block_node = block_to_htmlnode(block)
         block_nodes.append(block_node)
 
-    document_node = HTMLNode("div", children=block_nodes)
+    document_node = ParentNode("div", children=block_nodes)
 
     return document_node

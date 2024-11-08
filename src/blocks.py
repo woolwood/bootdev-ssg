@@ -25,7 +25,7 @@ def is_ordered_list(input_list):
 
 
 def block_to_block_type(markdown):
-    bullets = ("*", "-")
+    bullets = ("* ", "- ")
     if re.match("^#{1,6} ", markdown):
         return BlockType.HEADING
     elif markdown.startswith("```") and markdown.endswith("```"):
