@@ -38,7 +38,7 @@ class TestMarkdownToHtmlConversion(unittest.TestCase):
     def test_code_block_conversion(self):
         markdown = """```\ndef test():\n    pass\n```"""
         expected_node = ParentNode(
-            "pre", [ParentNode("code", [LeafNode(None, """\ndef test():\n    pass\n""")])]
+            "pre", [ParentNode("code", [LeafNode(None, """def test():\n    pass""")])]
         )
         result_node = block_to_htmlnode(markdown)
         self.assertEqual(result_node, expected_node)
@@ -54,7 +54,6 @@ class TestMarkdownToHtmlConversion(unittest.TestCase):
         expected_node = ParentNode("h1", [LeafNode(None, "#Hashtag in heading")])
         result_node = block_to_htmlnode(markdown)
         self.assertEqual(result_node, expected_node)
-        
 
     def test_paragraph_conversion(self):
         markdown = "This is a simple paragraph."
@@ -66,13 +65,13 @@ class TestMarkdownToHtmlConversion(unittest.TestCase):
         markdown = (
             "> Blockquote\n\n1. Ordered item\n\n* Unordered item\n\n```\nCode *block* block\n```"
         )
-        expected_node = HTMLNode(
+        expected_node = ParentNode(
             "div",
             children=[
                 ParentNode("blockquote", [LeafNode(None, "Blockquote")]),
                 ParentNode("ol", [ParentNode("li", [LeafNode(None, "Ordered item")])]),
                 ParentNode("ul", [ParentNode("li", [LeafNode(None, "Unordered item")])]),
-                ParentNode("pre", [ParentNode("code", [LeafNode(None, "\nCode *block* block\n")])]),
+                ParentNode("pre", [ParentNode("code", [LeafNode(None, "Code *block* block")])]),
             ],
         )
         result_node = markdown_to_html_node(markdown)
